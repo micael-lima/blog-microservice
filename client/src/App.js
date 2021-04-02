@@ -3,7 +3,7 @@ import PostCreate from './PostCreate';
 import PostList from './PostList';
 
 const App = () => (
-  <div className="container">
+  <div className="container-fluid">
     <h1>Create Post</h1>
     <PostCreate />
     <hr />
