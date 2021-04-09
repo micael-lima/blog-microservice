@@ -22,7 +22,7 @@ app.post('/posts/:id/comments', async (req, res) => {
   try {
     const comments = commentsByPostId[postId] || [];
 
-    comments.push({ id: commentId, content });
+    comments.push({ id: commentId, content, status: 'pending' });
 
     commentsByPostId[postId] = comments;
 
@@ -30,6 +30,7 @@ app.post('/posts/:id/comments', async (req, res) => {
       type: 'CommentCreated',
       data: {
         id: commentId,
+        status: 'pending',
         postId,
         content,
       },
@@ -37,14 +38,34 @@ app.post('/posts/:id/comments', async (req, res) => {
 
     res.status(201).json(comments);
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
     res.status(500).send();
   }
 });
 
-app.post('/events', (req, res) => {
-  console.log('Received Event: ', req.body.type);
-  res.sendStatus(204);
+app.post('/events', async (req, res) => {
+  try {
+    const { type, data } = req.body;
+
+    if (type === 'CommentModerated') {
+      const { postId, id, status, content } = data;
+
+      const comments = commentsByPostId[postId];
+      const comment = comments.find((comment) => comment.id === id);
+
+      comment.status = status;
+
+      await axios.post('http://localhost:4005/events', {
+        type: 'CommentUpdated',
+        data: { id, postId, status, content },
+      });
+    }
+
+    res.sendStatus(204);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
 });
 
 app.listen(4001, console.log('[´comments] listening at port 4001'));
