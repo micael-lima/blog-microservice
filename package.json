@@ -1,0 +1,25 @@
+{
+  "name": "blog-microservice",
+  "version": "1.0.0",
+  "description": "",
+  "workspaces": [
+    "./packages/*"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/micael-lima/blog-microservice.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/micael-lima/blog-microservice/issues"
+  },
+  "homepage": "https://github.com/micael-lima/blog-microservice#readme",
+  "devDependencies": {
+    "lerna": "^6.5.1"
+  }
+}
